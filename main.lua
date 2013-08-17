@@ -32,6 +32,7 @@ local function dragBody( event )
 	--gameUI.dragBody( event, { maxForce=20000, frequency=1000, dampingRatio=1.0, center=true } ) -- very tight dragging, snaps to object center
 end
 function ballFriction()
+	ball.angularVelocity=0
 	local vx, vy=ball:getLinearVelocity()
 	if (vx ~=0 or vy ~=0)then
 
@@ -41,6 +42,15 @@ function ballFriction()
 	    	newvy=0
 	    	newvx=0
 	    end
+	    if (ball.x > display.contentWidth - 10 or ball.x < 10) then
+                newvx = newvx * -1;
+        end
+        if (ball.y > display.contentHeight - 10 or ball.y < 10) then
+                newvy = newvy * -1;
+        end
+
+
+
 
 	    ball:setLinearVelocity(newvx,newvy)
 	end
@@ -48,12 +58,10 @@ function ballFriction()
 end
 
 function ballEnteredHole()
-	if (math.abs(hole.x-ball.x)<5 and math.abs(hole.y-ball.y)<5)then
+	if (math.abs(hole.x-ball.x)<8 and math.abs(hole.y-ball.y)<5)then
 		ball.alpha=0
 		goodOne = display.newText ("You Win!", _W/2, _H/2)
 	end
-
-	-- body
 end
 ball:addEventListener( "touch", dragBody )
 Runtime:addEventListener( "enterFrame", ballFriction)
