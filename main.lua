@@ -20,7 +20,6 @@ bg.y = display.contentCenterY
 local hole = display.newCircle (_W/2, 100, 15)
 hole:setFillColor(0,0,0)
 local ball = display.newCircle (_W/2, 400, 10)
---local ball = display.newImage ("ball.bmp", true)
 physics.addBody(ball, {density = 1, friction = 1})
 physics.setGravity(0,0)
 
@@ -35,17 +34,14 @@ end
 function ballFriction()
 	local vx, vy=ball:getLinearVelocity()
 	if (vx ~=0 or vy ~=0)then
-		local factor = 0.2--/((vx*vx)+(vy*vy)))
-		if (factor <= 1)then
-			local newvx=vx*factor
-	        local newvy=vy*factor
-	    --[[else
+
+	    local newvx=vx*(1 - (10000)/((vx*vx)+(vy*vy)))
+	    local newvy=vy*(1 - (10000)/((vx*vx)+(vy*vy)))
+	    if ((newvy/vy)<0 or (newvx/vx)<0)then
+	    	newvy=0
 	    	newvx=0
-	    	newvy=0]]
 	    end
 
-
-	    
 	    ball:setLinearVelocity(newvx,newvy)
 	end
 	
@@ -62,7 +58,6 @@ end
 ball:addEventListener( "touch", dragBody )
 Runtime:addEventListener( "enterFrame", ballFriction)
 Runtime:addEventListener( "enterFrame", ballEnteredHole)
-
 
 
 
