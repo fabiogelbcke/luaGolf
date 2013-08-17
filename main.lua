@@ -10,6 +10,7 @@ local _W = display.contentWidth
 local _H = display.contentHeight
 local physics = require("physics")
 local gameUI = require("gameUI")
+display.setStatusBar ( display.HiddenStatusBar)
 
 
 physics.start()
@@ -17,10 +18,12 @@ local bg = display.newImage ("grassbg.png", true)
 --physics.addBody(bg)
 bg.x = display.contentCenterX
 bg.y = display.contentCenterY
-local hole = display.newCircle (_W/2, 100, 15)
+local hole = display.newCircle (_W/2, 100, 17)
 hole:setFillColor(0,0,0)
 local ball = display.newCircle (_W/2, 400, 10)
 physics.addBody(ball, {density = 1, friction = 1})
+local ob1 = display.newRect (0, 250, 200, 20)
+physics.addBody (ob1, "static")
 physics.setGravity(0,0)
 
 system.activate( "multitouch" )
@@ -58,9 +61,9 @@ function ballFriction()
 end
 
 function ballEnteredHole()
-	if (math.abs(hole.x-ball.x)<8 and math.abs(hole.y-ball.y)<5)then
+	if (math.abs(hole.x-ball.x)<12 and math.abs(hole.y-ball.y)<17)then
 		ball.alpha=0
-		goodOne = display.newText ("You Win!", _W/2, _H/2)
+		goodOne = display.newText ("You Win!", _W/2-20, _H/2)
 	end
 end
 ball:addEventListener( "touch", dragBody )
